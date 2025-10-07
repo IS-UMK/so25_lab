@@ -2,5 +2,4 @@
 
 # to jest komentarz
 
-
-echo '$$( Hello grader! )$$'
+echo '$$( Hello '$USER'! )$$'
