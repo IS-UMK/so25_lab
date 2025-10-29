@@ -9,6 +9,6 @@ fi
 for var in "$@"
 do
    # TODO: tutaj dokonczyc wypisywanie zmiennych
-   echo var=$var
+   echo $var=$(printenv $var)
 done
 
