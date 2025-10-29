@@ -1,19 +1,12 @@
 #!/bin/bash
 
+gn=( $(id -nG $1 ) )
+gid=( $(id -G $1 ) )
 
-grnames=( $(id -nG $1) ) 
-echo $?
+n=${#gn[*]}
 
-
-grids=( $(id -G $1) )
-
-n=${#grnames[*]}
-
-for ((i=0; i<n;i++))
+for ((i=0; i<n; i++))
 do
-   echo ${grids[i]} ${grnames[i]}
+   echo ${gid[i]} ${gn[i]}
 done
-
-
-
 
