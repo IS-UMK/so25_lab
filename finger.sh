@@ -18,6 +18,7 @@ do
       else
          echo "No Plan."
       fi
+
       echo 
    fi
 done < /etc/passwd
