@@ -25,17 +25,26 @@ then
 fi
 
 # lista urzytkownikow grupy podstawowej
-gp=$(grep "^.*:.*:.*:$gid:" /etc/passwd | cut -d : -f 1)
+pusers=$(grep "^.*:.*:.*:$gid:" /etc/passwd | cut -d : -f 1)
 
 # lista urzytkownikow dodanych do grupy
-gs=$(grep "^.*:.*:$gid:" /etc/group | cut -f 4 -d : | tr ',' '\n')
+susers=$(grep "^.*:.*:$gid:" /etc/group | cut -f 4 -d : | tr ',' '\n')
+
+users=""
 
 if $p 
 then
-   echo "$gp" 
-elif $s 
+   users+="${pusers}\n" 
+fi
+
+if $s 
 then
-   echo "$gs" 
-else
-   echo -n -e "$gp\n$gs" 
-fi | sort
+   users+="${susers}\n" 
+fi
+
+if [ $p == false ] && [ $s == false ]
+then
+   users="${pusers}\n${susers}\n"
+fi
+
+echo -n -e "${users}" | sort
