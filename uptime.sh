@@ -1,18 +1,11 @@
 #!/bin/bash
 
-s=true
-m=false
-h=false
-d=false
-a=false
+unit=s
 
 while getopts  ":amhd" opt
 do
    case $opt in
-      a) s=false; a=true ;;
-      m) s=false; m=true ;;
-      h) s=false; h=true ;;
-      d) s=false; d=true ;;
+      a|m|h|d) unit=$opt
    esac
 done
 
@@ -20,6 +13,7 @@ shift $((OPTIND-1))
 
 t1=$(uptime -s)
 t2="$1"
+
 if [ -z "$t2" ] 
 then
    t2=$(date +"%Y-%m-%d %H:%M:%S")
@@ -28,45 +22,22 @@ fi
 t1=$(date -d "$t1" +"%s" )
 t2=$(date -d "$t2" +"%s" )
 
-xs=$((t2-t1))
-xm=$(echo "$xs/60" | bc -l)
-xh=$(echo "$xm/60" | bc -l)
-xd=$(echo "$xh/24" | bc -l)
+xs=$((t2-t1))                  # czas w sekundach
+xm=$(echo "$xs/60" | bc -l)    # czas w minutach
+xh=$(echo "$xm/60" | bc -l)    # czas w godzinach
+xd=$(echo "$xh/24" | bc -l)    # czas w dniach
 
 LC_ALL=C
 
-if $s
-then
-   printf "uptime %.2f s\n" $xs
-fi
-if $m
-then
-   printf "uptime %.2f m\n" $xm
-fi
+[[ "$unit" == s ]] &&  printf "uptime %.2f s\n" $xs
+[[ "$unit" == m ]] &&  printf "uptime %.2f m\n" $xm
+[[ "$unit" == h ]] &&  printf "uptime %.2f h\n" $xh
+[[ "$unit" == d ]] &&  printf "uptime %.2f d\n" $xd
 
-if $h
-then
-   printf "uptime %.2f h\n" $xh
-fi
-
-if $d
-then
-   printf "uptime %.2f d\n" $xd
-fi
-
-if $a
+if [[ $unit == a ]]
 then
    printf "uptime %.2f s\n" $xs
    printf "       %.2f m\n" $xm
    printf "       %.2f h\n" $xh
    printf "       %.2f d\n" $xd
 fi
-
-
-
-
-
-
-
-
-
